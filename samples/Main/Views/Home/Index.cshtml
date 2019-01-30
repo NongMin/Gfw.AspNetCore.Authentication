@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "示例程序";
+}
+
+<div class="container text-center">
+    <h4 style="margin-top:50px">@ViewData["Title"]</h4>
+    <p class="text-danger">注：为了能让示例成功运行，你应该需要</p>
+    <p>
+        1.前往Startup.cs文件填写ClientId和ClientSecret
+        2.在微信中访问此页面
+    </p>
+    <p>
+        <a href="@Url.Action("ExternalLogin","Home",new { provider = Startup.AuthenticationScheme_WeChat })"
+           class="btn btn-success">微信登录</a>
+        <a href="@Url.Action("ExternalLogin","Home",new { provider = Startup.AuthenticationScheme_WeChatBase })"
+           class="btn btn-success"
+           style="margin-left:10px">微信登录（snsapi_base）</a>
+    </p>
+</div>
