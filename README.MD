@@ -28,3 +28,7 @@ services.AddAuthentication()
 
  ```
 
+#### 1.xx 升级到 2.00注意事项
+
+* ClaimTypes.NameIdentifier和ClaimTypes.Name现在默认的映射属性是openid
+* 不再依赖基类库
