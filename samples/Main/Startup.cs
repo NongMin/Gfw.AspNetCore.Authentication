@@ -52,6 +52,8 @@ namespace Main
                options.Events.OnRemoteFailure = OnRemoteFailureHandler;
 
                MapWeChatJsonKey(options.ClaimActions);
+
+               options.SignInScheme = "WeChatCookie.WeChat";
            })
            .AddCookie("WeChatCookie.WeChat")
 
@@ -61,6 +63,8 @@ namespace Main
                options.ClientId = "ClientId";
                options.ClientSecret = "ClientSecret";
                options.ChangeScope(WeChatScopes.snsapi_base); //注意：应调用此方法修改
+
+               options.SignInScheme = "WeChatCookie.WeChatBase";
            })
            .AddCookie("WeChatCookie.WeChatBase")
 
