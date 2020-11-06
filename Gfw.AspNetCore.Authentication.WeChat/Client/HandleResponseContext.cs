@@ -1,10 +1,6 @@
-﻿using Gfw.AspNetCore.Authentication.WeChatClient;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace Gfw.AspNetCore.Authentication.WeChat.Client
 {

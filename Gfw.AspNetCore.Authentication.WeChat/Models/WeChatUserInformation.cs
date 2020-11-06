@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gfw.AspNetCore.Authentication.WeChat.Models
+﻿namespace Gfw.AspNetCore.Authentication.WeChat.Models
 {
     public class WeChatUserInformation
     {

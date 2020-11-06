@@ -1,6 +1,5 @@
 ﻿
 using Gfw.AspNetCore.Authentication.WeChat.Client;
-using Gfw.AspNetCore.Authentication.WeChatClient;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using System;

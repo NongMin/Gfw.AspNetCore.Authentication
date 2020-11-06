@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Gfw.AspNetCore.Authentication.WeChatClient;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -42,7 +41,7 @@ namespace Gfw.AspNetCore.Authentication.WeChat.Client
 
             var properties = new AuthenticationProperties();
 
-            var tokens = await ExchangeCodeAsync(code, BuildRedirectUri(Options.CallbackPath));
+            var tokens = await ExchangeCodeAsync(new OAuthCodeExchangeContext(properties, code, BuildRedirectUri(Options.CallbackPath)));
 
             if (tokens.Error != null)
             {

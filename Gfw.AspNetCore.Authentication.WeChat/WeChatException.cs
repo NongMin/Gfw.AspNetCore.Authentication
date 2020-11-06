@@ -12,15 +12,5 @@ namespace Gfw.AspNetCore.Authentication.WeChat
         public WeChatException(string message) : base(message)
         {
         }
-
-        public WeChatException(string message, string errcode, string errmsg) : base(message)
-        {
-            this.errcode = errcode;
-            this.errmsg = errmsg;
-        }
-
-        public string errcode { get;private set; }
-
-        public string errmsg { get; private set; }
     }
 }

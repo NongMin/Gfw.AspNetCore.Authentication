@@ -1,35 +1,20 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using System.Security.Claims;
 using System.Linq;
 using Gfw.AspNetCore.Authentication.WeChat.Models;
 using Microsoft.AspNetCore.Authentication;
-using System.Text.RegularExpressions;
 using System.Text;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http.Internal;
-using Newtonsoft.Json;
-using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Http;
 
 namespace Gfw.AspNetCore.Authentication.WeChat
 {
     public class WeChatHandler : WeChatHandlerBase<WeChatOptions>
     {
-        //private const string CorrelationProperty = ".xsrf"; 
-
-        private static readonly string CorrelationProperty =
-            (string)typeof(RemoteAuthenticationHandler<>)
-            .GetField(nameof(CorrelationProperty), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-            .GetRawConstantValue();
-
         public WeChatHandler(IOptionsMonitor<WeChatOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         { }
@@ -161,7 +146,7 @@ namespace Gfw.AspNetCore.Authentication.WeChat
             {
                 #region 标准化state参数以便使用官方库逻辑
 
-                Dictionary<string, Microsoft.Extensions.Primitives.StringValues> dic;
+                Dictionary<string, StringValues> dic;
 
                 if (Request.Query.Count > 0)
                 {
@@ -169,7 +154,7 @@ namespace Gfw.AspNetCore.Authentication.WeChat
                 }
                 else
                 {
-                    dic = new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>(1);
+                    dic = new Dictionary<string, StringValues>(1);
                 }
 
                 dic.Add("state", state);

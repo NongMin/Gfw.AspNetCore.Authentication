@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,14 +8,10 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Linq;
-using Gfw.AspNetCore.Authentication.WeChat.Models;
 using Microsoft.AspNetCore.Authentication;
-using System.Text.RegularExpressions;
-using System.Text;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http.Internal;
-using Newtonsoft.Json;
-using Microsoft.Net.Http.Headers;
+using System.Text.Json;
+using Gfw.AspNetCore.Authentication.WeChat.Models;
 
 namespace Gfw.AspNetCore.Authentication.WeChat
 {
@@ -28,14 +22,13 @@ namespace Gfw.AspNetCore.Authentication.WeChat
             : base(options, logger, encoder, clock)
         { }
 
-
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
         {
             var tokenRequestParameters = new Dictionary<string, string>()
             {
                 { "appid", Options.ClientId },
                 { "secret", Options.ClientSecret },
-                { "code", code },
+                { "code", context.Code },
                 { "grant_type", "authorization_code" },
             };
 
@@ -48,11 +41,11 @@ namespace Gfw.AspNetCore.Authentication.WeChat
             var content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var payload = JObject.Parse(content);
-                var errcode = payload.Value<string>("errcode");
+                var payload = JsonDocument.Parse(content);
+                var errcode = payload.RootElement.GetString("errcode");
                 if (errcode != null)
                 {
-                    var weChatException = new WeChatException("使用code换取access_token失败", errcode, payload.Value<string>("errmsg"));
+                    var weChatException = new WeChatException("使用code换取access_token失败，content：" + content);
 
                     Logger.LogDebug(weChatException, "WeChatHandler ExchangeCodeAsync");
 
@@ -64,7 +57,7 @@ namespace Gfw.AspNetCore.Authentication.WeChat
             else
             {
                 var errorMessage = "使用code换取access_token失败：HttpClient返回错误代码，" +
-                    $"Status：{response.StatusCode}，Headers：{response.Headers.ToString()}，Body：{content}";
+                    $"Status：{response.StatusCode}，Headers：{response.Headers}，Body：{content}";
 
                 var ex = new Exception(errorMessage);
 
@@ -85,7 +78,7 @@ namespace Gfw.AspNetCore.Authentication.WeChat
             {
                 var url = Options.UserInformationEndpoint +
                     $"?access_token={UrlEncoder.Default.Encode(tokens.AccessToken)}" +
-                    $"&openid={UrlEncoder.Default.Encode(tokens.Response.Value<string>("openid"))}" +
+                    $"&openid={UrlEncoder.Default.Encode(tokens.Response.RootElement.GetString("openid"))}" +
                     $"&lang=" + Options.Language;
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -95,11 +88,12 @@ namespace Gfw.AspNetCore.Authentication.WeChat
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var payload = JObject.Parse(content);
 
-                    context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload);
+                    var payload = JsonDocument.Parse(content);
 
-                    context.RunClaimActions(payload);
+                    context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
+
+                    context.RunClaimActions(payload.RootElement);
                 }
                 else
                 {
@@ -115,9 +109,9 @@ namespace Gfw.AspNetCore.Authentication.WeChat
 
             if (context == null)
             {
-                context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response);
+                context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, tokens.Response.RootElement);
 
-                context.RunClaimActions(tokens.Response);
+                context.RunClaimActions(tokens.Response.RootElement);
             }
 
             await Events.CreatingTicket(context);

@@ -1,25 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.0.2</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/NongMin/Gfw.AspNetCore.Authentication</PackageProjectUrl>
-    <PackageReleaseNotes>Asp.Net Core Gfw（功夫网）微信 OAuth2.0中间件
-* 支持为普通开发者开放的接口（scope：snsapi_login）
-* 支持为公众号开放的接口（scope：snsapi_base、snsapi_userinfo）
-* 支持客户端使用从微信获取的code登录。</PackageReleaseNotes>
-    <Description>Asp.Net Core Gfw（功夫网）微信 OAuth2.0中间件
-* 支持为普通开发者开放的接口（scope：snsapi_login）
-* 支持为公众号开放的接口（scope：snsapi_base、snsapi_userinfo）
-* 支持客户端使用从微信获取的code登录。</Description>
-    <RepositoryUrl>https://github.com/NongMin/Gfw.AspNetCore.Authentication</RepositoryUrl>
-    <Authors>NongMin</Authors>
-    <Company />
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.0.0" />
-  </ItemGroup>
-
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<Version>3.0.0</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://github.com/NongMin/Gfw.AspNetCore.Authentication</PackageProjectUrl>
+		<PackageReleaseNotes>升级支持.Net Core 3.0+，.Net Core 2.2或以下版本请使用旧版。</PackageReleaseNotes>
+		<Description>
+			Asp.Net Core Gfw（功夫网）微信 OAuth中间件
+			* 支持为普通开发者开放的接口（scope：snsapi_login）
+			* 支持为公众号开放的接口（scope：snsapi_base、snsapi_userinfo）
+			* 支持客户端使用从微信获取的code登录。
+		</Description>
+		<RepositoryUrl>https://github.com/NongMin/Gfw.AspNetCore.Authentication</RepositoryUrl>
+		<Authors>NongMin</Authors>
+		<Company />
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 </Project>

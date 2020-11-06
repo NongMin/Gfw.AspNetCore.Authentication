@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gfw.AspNetCore.Authentication.WeChat.Client
+﻿namespace Gfw.AspNetCore.Authentication.WeChat.Client
 {
     public class WeChatClientDefaults
     {
